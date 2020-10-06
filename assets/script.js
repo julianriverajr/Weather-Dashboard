@@ -15,6 +15,16 @@ $("#searchButton").on("click", function () {
         $("main").append($("<p>").text("Temperature: " + Math.round((response.main.temp)*10)/ 10 + " °F"));
         $("main").append($("<p>").text("Humidity: " + response.main.humidity + "%"));
         $("main").append($("<p>").text("Wind speed: " + Math.round((response.wind.speed)*10)/ 10 + " MPH"));
-
+        var coordinatesLat = (response.coord.lat);
+        var coordinatesLon = (response.coord.lon)
+        console.log(coordinatesLat, coordinatesLon);
+        var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + coordinatesLat + "&lon=" + coordinatesLon + "&appid=" + apiKey;
+        $.ajax({
+            url: queryURL2,
+            method: "GET"
+        }).then(function(r){
+            console.log(r);
+            $("main").append($("<p>").text("UV Index: " + r.value));
+        })
     })
 });
