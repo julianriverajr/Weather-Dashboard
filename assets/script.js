@@ -1,4 +1,5 @@
 $("#searchButton").on("click", function () {
+    $("main").empty();
     //variables for ajax function to pull from when retrieving weather info
     var apiKey = "1d730319312affde67db4e3cca07e92f";
     var city = $("#cityName").val();
@@ -21,15 +22,24 @@ $("#searchButton").on("click", function () {
         var coordinatesLat = (response.coord.lat);
         var coordinatesLon = (response.coord.lon)
         console.log(coordinatesLat, coordinatesLon);
-        var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?lat=" + coordinatesLat + "&lon=" + coordinatesLon + "&appid=" + apiKey;
+        var queryURLuv = "https://api.openweathermap.org/data/2.5/uvi?lat=" + coordinatesLat + "&lon=" + coordinatesLon + "&appid=" + apiKey;
         //ajax function asking for information from open weather map for uv index information
         $.ajax({
-            url: queryURL2,
+            url: queryURLuv,
             method: "GET"
         }).then(function(response2){
             console.log(response2);
             // adding uv index to main div and rounding to one decimal
             $("main").append($("<p>").text("UV Index: " + Math.round((response2.value)*10)/10));
+            $("article").append($("<p text-align:right;>").text(city));
+        })
+        var queryURL5Day = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=Imperial&appid=" + apiKey;
+        //ajax function for 5 day forecast
+        $.ajax({
+            url: queryURL5Day,
+            method: "GET"
+        }).then(function(response5Day){
+            console.log(response5Day);
         })
     })
 });
